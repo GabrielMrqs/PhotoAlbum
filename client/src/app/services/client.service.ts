@@ -15,4 +15,7 @@ export class ClientService {
   public addClient(client: any): Observable<any> {
     return this.http.post(`${this.baseURL}/addClient`, client);
   }
+  public login(login: any): Observable<any> {
+    return this.http.post(`${this.baseURL}/login`, login);
+  }
 }

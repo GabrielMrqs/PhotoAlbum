@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared.Domain", "Shared.Dom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Album.Domain", "Album.Domain\Album.Domain.csproj", "{8A030020-8642-4FCE-A01B-C0EE28632BAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Album.Infra", "Album.Infra\Album.Infra.csproj", "{C24A6E09-3516-44D6-87ED-5432C846599E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Album.Infra", "Album.Infra\Album.Infra.csproj", "{C24A6E09-3516-44D6-87ED-5432C846599E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoAlbum.Application", "PhotoAlbum.Application\PhotoAlbum.Application.csproj", "{64AF4E33-F011-4401-B8FE-F1D88B60A172}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{C24A6E09-3516-44D6-87ED-5432C846599E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C24A6E09-3516-44D6-87ED-5432C846599E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C24A6E09-3516-44D6-87ED-5432C846599E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64AF4E33-F011-4401-B8FE-F1D88B60A172}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64AF4E33-F011-4401-B8FE-F1D88B60A172}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64AF4E33-F011-4401-B8FE-F1D88B60A172}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64AF4E33-F011-4401-B8FE-F1D88B60A172}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

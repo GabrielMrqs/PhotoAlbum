@@ -1,34 +1,36 @@
-﻿using Albums.Infra.ClientModule;
-using Albums.Domain;
+﻿using Albums.Domain;
+using Albums.Infra.LoginModule;
 using Login.Application.DTO.ClientModule;
 using MediatR;
+using Shared.Infra;
 
 namespace Login.Application
 {
     public class AddClientHandler : IRequestHandler<AddClientRequest>
     {
-        private readonly ClientRepository _repository;
+        private readonly BaseRepository<Client> _clientRepository;
+        private readonly LoginRepository _loginRepository;
 
-        public AddClientHandler(ClientRepository repository)
+        public AddClientHandler(BaseRepository<Client> clientRepository, LoginRepository loginRepository)
         {
-            _repository = repository;
+            _clientRepository = clientRepository;
+            _loginRepository = loginRepository;
         }
 
         public async Task<Unit> Handle(AddClientRequest request, CancellationToken cancellationToken)
         {
             var clientRequest = request.Client;
 
-            var response = await _repository.GetByEmailAsync(clientRequest.Email);
-            if (response is not null)
+            var alreadyExists = await _loginRepository.ExistsEmailAsync(clientRequest.Email);
+            if (alreadyExists)
                 throw new Exception("Client already registred in database");
 
             var client = new Client
             {
                 Username = clientRequest.Username,
-                Email = clientRequest.Email,
-                Password = clientRequest.Password,
+                Login = new(clientRequest.Email, clientRequest.Password)
             };
-            await _repository.InsertAsync(client);
+            await _clientRepository.InsertAsync(client);
             return Unit.Value;
         }
     }

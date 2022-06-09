@@ -1,43 +1,68 @@
+using Microsoft.EntityFrameworkCore;
+using Shared.Infra;
+using MediatR;
+using Albums.Infra.AlbumModule;
+using PhotoAlbum.Application.PhotoModule;
+using PhotoAlbum.Application.PhotoModule.DTO_s;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+LoadEnvironmentVariables();
+
+AddServices(builder);
+
+builder.Configuration.AddEnvironmentVariables();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+app.UseCors("cors");
+
 app.UseHttpsRedirection();
 
-var summaries = new[]
+app.MapGet("/getAlbum/{clientId}", async (IMediator mediator, Guid clientId) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateTime.Now.AddDays(index),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    return await mediator.Send(new GetPhotoAlbumRequest(clientId));
 })
-.WithName("GetWeatherForecast");
+.WithName("Get client's Album");
+
+app.MapPut("/addPhoto", async (IMediator mediator, AddPhotoDTO addphoto) =>
+{
+    await mediator.Send(new AddPhotoRequest(addphoto));
+})
+.WithName("Add photo");
+
+await ApplyMigrations();
 
 app.Run();
 
-internal record WeatherForecast(DateTime Date, int TemperatureC, string? Summary)
+void LoadEnvironmentVariables()
 {
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    var root = Directory.GetCurrentDirectory();
+    var dotenv = Path.Combine(root, ".env");
+    DotEnv.Load(dotenv);
+}
+
+void AddServices(WebApplicationBuilder builder)
+{
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen();
+    builder.Services.AddAutoMapper(typeof(GetPhotoAlbumHandler));
+    builder.Services.AddMediatR(typeof(GetPhotoAlbumHandler));
+    builder.Services.AddCors(opt => opt.AddPolicy("cors", x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
+    //builder.Services.AddScoped<BaseRepository<Client>>();
+    builder.Services.AddScoped<AlbumRepository>();
+    builder.Services.AddDbContext<AppDbContext>(opt =>
+        opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+}
+
+async Task ApplyMigrations()
+{
+    using var scope = app.Services.CreateAsyncScope();
+    await scope.ServiceProvider.GetRequiredService<AppDbContext>().Database.MigrateAsync();
 }

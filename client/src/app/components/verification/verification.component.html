@@ -1,4 +1,4 @@
-<div class="container">
+<div *ngIf="success; else elseBlock" class="container">
     <h1>Parabéns sua conta está ativa agora</h1>
     <h1>Parabéns sua conta está ativa agora</h1>
     <h1>Parabéns sua conta está ativa agora</h1>
@@ -16,3 +16,23 @@
     <h1>Parabéns sua conta está ativa agora</h1>
     <h1>Parabéns sua conta está ativa agora</h1>
 </div>
+<ng-template #elseBlock>
+    <div class="container">
+        <h1>Não foi possível ativar sua conta</h1>
+        <h1>Não foi possível ativar sua conta</h1>
+        <h1>Não foi possível ativar sua conta</h1>
+        <h1>Não foi possível ativar sua conta</h1>
+        <h1>Não foi possível ativar sua conta</h1>
+        <h1>Não foi possível ativar sua conta</h1>
+        <h1>Não foi possível ativar sua conta</h1>
+        <h1>Não foi possível ativar sua conta</h1>
+        <h1>Não foi possível ativar sua conta</h1>
+        <h1>Não foi possível ativar sua conta</h1>
+        <h1>Não foi possível ativar sua conta</h1>
+        <h1>Não foi possível ativar sua conta</h1>
+        <h1>Não foi possível ativar sua conta</h1>
+        <h1>Não foi possível ativar sua conta</h1>
+        <h1>Não foi possível ativar sua conta</h1>
+        <h1>Não foi possível ativar sua conta</h1>
+    </div>
+</ng-template>

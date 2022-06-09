@@ -14,13 +14,13 @@ namespace Albums.Infra.ClientModule
 
             builder.Property(x => x.Username).IsRequired();
 
-            builder.Property(x => x.Password).IsRequired();
-
-            builder.Property(x => x.Email).IsRequired();
-
             builder.HasOne(x => x.Album)
                    .WithOne(x => x.Client)
                    .HasForeignKey<Album>(x => x.ClientId);
+
+            builder.HasOne(x => x.Login)
+                   .WithOne(x => x.Client)
+                   .HasForeignKey<Login>(x => x.ClientId);
         }
     }
 }
