@@ -14,9 +14,9 @@ namespace Albums.Infra.AlbumModule
 
             builder.Property(x => x.Photos);
 
-            builder.HasOne(x => x.Client)
+            builder.HasOne(x => x.User)
                    .WithOne(x => x.Album)
-                   .HasForeignKey<Album>(x => x.ClientId);
+                   .HasForeignKey<Album>(x => x.UserId);
 
             builder.HasMany(x => x.Photos)
                    .WithOne(x => x.Album)

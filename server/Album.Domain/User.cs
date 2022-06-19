@@ -2,13 +2,13 @@
 
 namespace Albums.Domain
 {
-    public class Client : Entity
+    public class User : Entity
     {
         public string Username { get; set; }
         public Login Login { get; set; }
         public Album Album { get; set; }
 
-        public Client()
+        public User()
         {
             Album = new();
         }

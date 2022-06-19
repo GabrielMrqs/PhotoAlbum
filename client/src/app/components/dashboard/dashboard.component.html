@@ -1,4 +1,7 @@
-
-<div *ngFor="let photo of photos">
-    <img [src]="toBase64(photo.imageBase64)">
+<div class="content">
+  <div fxLayout="row wrap" fxLayoutGap="15px grid">
+    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngFor="let photo of photos">
+      <app-photo [photo]="photo.imageBase64"></app-photo>
+    </div>
+  </div>
 </div>

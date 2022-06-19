@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ClientService } from 'src/app/services/client.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-log-in',
@@ -8,14 +8,13 @@ import { ClientService } from 'src/app/services/client.service';
   styleUrls: ['./log-in.component.scss'],
 })
 export class LogInComponent implements OnInit {
-  constructor(private service: ClientService, private router: Router) {}
+  constructor(private service: AuthService, private router: Router) {}
 
   ngOnInit(): void {}
 
   login(value: any) {
-    console.log(value)
-    this.service.login(value).subscribe((res: any) => {
-      this.router.navigate([`dashboard/${res}`])
+    this.service.login(value).subscribe(() => {
+      this.router.navigate([`dashboard`]);
     });
   }
 }

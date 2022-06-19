@@ -19,10 +19,10 @@ namespace PhotoAlbum.Application.PhotoModule
 
         public async Task<IList<ViewPhotoDTO>> Handle(GetPhotoAlbumRequest request, CancellationToken cancellationToken)
         {
-            var album = await _albumRepository.GetByClientIdAsync(request.ClientId);
+            var album = await _albumRepository.GetByUserIdAsync(request.UserId);
             var photos = _mapper.Map<List<Photo>, List<ViewPhotoDTO>>(album.Photos);
             return photos;
         }
     }
-    public record GetPhotoAlbumRequest(Guid ClientId) : IRequest<IList<ViewPhotoDTO>>;
+    public record GetPhotoAlbumRequest(Guid UserId) : IRequest<IList<ViewPhotoDTO>>;
 }

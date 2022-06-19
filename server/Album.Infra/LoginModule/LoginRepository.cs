@@ -17,7 +17,7 @@ namespace Albums.Infra.LoginModule
         public async Task<Guid?> LoginAsync(string email, string password)
         {
             var login = await _data.FirstOrDefaultAsync(x => x.Password == password && x.Email == email);
-            return login?.ClientId;
+            return login?.UserId;
         }
     }
 }

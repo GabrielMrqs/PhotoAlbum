@@ -9,9 +9,9 @@ namespace Albums.Infra.AlbumModule
         public AlbumRepository(AppDbContext context) : base(context)
         {
         }
-        public async Task<Album?> GetByClientIdAsync(Guid clientId)
+        public async Task<Album?> GetByUserIdAsync(Guid userId)
         {
-            return await _data.Include(x => x.Photos).FirstOrDefaultAsync(x => x.ClientId == clientId);
+            return await _data.Include(x => x.Photos).FirstOrDefaultAsync(x => x.UserId == userId);
         }
     }
 }

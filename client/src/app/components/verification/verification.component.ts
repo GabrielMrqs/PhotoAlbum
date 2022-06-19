@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import jwtDecode from 'jwt-decode';
-import { Client } from 'src/app/models/client';
-import { ClientService } from 'src/app/services/client.service';
+import { User } from 'src/app/models/user';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-verification',
@@ -11,22 +11,22 @@ import { ClientService } from 'src/app/services/client.service';
 })
 export class VerificationComponent implements OnInit {
   token: string;
-  client: Client;
+  user: User;
   success: boolean = true;
-  constructor(private route: ActivatedRoute, private service: ClientService) {}
+  constructor(private route: ActivatedRoute, private service: UserService) {}
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.token = params['token'];
-      this.addClient();
+      this.addUser();
     });
   }
 
-  private addClient() {
+  private addUser() {
     let data: any = jwtDecode(this.token);
-    this.client = new Client(data.username, data.password, data.email);
+    this.user = new User(data.username, data.password, data.email);
     this.service
-      .addClient(this.client)
+      .addUser(this.user)
       .subscribe({ error: () => (this.success = false) });
   }
 }

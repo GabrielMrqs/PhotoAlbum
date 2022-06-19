@@ -5,15 +5,15 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class ClientService {
+export class UserService {
   baseURL: string = 'https://localhost:7289';
   constructor(private http: HttpClient) {}
 
-  public verifyClient(client: any): Observable<any> {
-    return this.http.post(`${this.baseURL}/verifyClient`, client);
+  public verifyUser(user: any): Observable<any> {
+    return this.http.post(`${this.baseURL}/verifyUser`, user);
   }
-  public addClient(client: any): Observable<any> {
-    return this.http.post(`${this.baseURL}/addClient`, client);
+  public addUser(user: any): Observable<any> {
+    return this.http.post(`${this.baseURL}/addUser`, user);
   }
   public login(login: any): Observable<any> {
     return this.http.post(`${this.baseURL}/login`, login);

@@ -12,9 +12,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
 import { VerificationComponent } from './components/verification/verification.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { PhotoComponent } from './components/photo/photo.component';
 
 @NgModule({
-  declarations: [AppComponent, LogInComponent, RegisterComponent, VerificationComponent, DashboardComponent],
+  declarations: [AppComponent, LogInComponent, RegisterComponent, VerificationComponent, DashboardComponent, PhotoComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

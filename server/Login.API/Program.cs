@@ -1,7 +1,7 @@
 using Albums.Domain;
 using Albums.Infra.LoginModule;
 using Login.Application;
-using Login.Application.DTO.ClientModule;
+using Login.Application.DTO.UserModule;
 using Login.Application.DTO.LoginModule;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -27,17 +27,17 @@ app.UseCors("cors");
 
 app.UseHttpsRedirection();
 
-app.MapPost("/verifyClient", async (IMediator mediator, ClientDTO client) =>
+app.MapPost("/verifyUser", async (IMediator mediator, UserDTO user) =>
 {
-    var response = await mediator.Send(new VerifyClientRequest(client));
+    var response = await mediator.Send(new VerifyUserRequest(user));
 })
 .WithName("Send Verification");
 
-app.MapPost("/addClient", async (IMediator mediator, ClientDTO client) =>
+app.MapPost("/addUser", async (IMediator mediator, UserDTO user) =>
 {
-    var response = await mediator.Send(new AddClientRequest(client));
+    var response = await mediator.Send(new AddUserRequest(user));
 })
-.WithName("Add Client");
+.WithName("Add User");
 
 app.MapPost("/login", async (IMediator mediator, LoginDTO login) =>
 {
@@ -66,9 +66,9 @@ void AddServices(WebApplicationBuilder builder)
 {
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
-    builder.Services.AddMediatR(typeof(VerifyClientHandler));
+    builder.Services.AddMediatR(typeof(VerifyUserHandler));
     builder.Services.AddCors(opt => opt.AddPolicy("cors", x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
-    builder.Services.AddScoped<BaseRepository<Client>>();
+    builder.Services.AddScoped<BaseRepository<User>>();
     builder.Services.AddScoped<LoginRepository>();
     builder.Services.AddDbContext<AppDbContext>(opt =>
         opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

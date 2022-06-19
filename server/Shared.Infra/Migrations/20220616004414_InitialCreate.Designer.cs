@@ -12,8 +12,8 @@ using Shared.Infra;
 namespace Shared.Infra.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220608160434_tabela_login")]
-    partial class tabela_login
+    [Migration("20220616004414_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,39 +30,21 @@ namespace Shared.Infra.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ClientId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId")
+                    b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Album");
-                });
-
-            modelBuilder.Entity("Albums.Domain.Client", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Clients");
+                    b.ToTable("Albums");
                 });
 
             modelBuilder.Entity("Albums.Domain.Login", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ClientId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
@@ -73,9 +55,12 @@ namespace Shared.Infra.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId")
+                    b.HasIndex("UserId")
                         .IsUnique();
 
                     b.ToTable("Login");
@@ -98,29 +83,44 @@ namespace Shared.Infra.Migrations
 
                     b.HasIndex("AlbumId");
 
-                    b.ToTable("Photo");
+                    b.ToTable("Photos");
+                });
+
+            modelBuilder.Entity("Albums.Domain.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Albums.Domain.Album", b =>
                 {
-                    b.HasOne("Albums.Domain.Client", "Client")
+                    b.HasOne("Albums.Domain.User", "User")
                         .WithOne("Album")
-                        .HasForeignKey("Albums.Domain.Album", "ClientId")
+                        .HasForeignKey("Albums.Domain.Album", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Client");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Albums.Domain.Login", b =>
                 {
-                    b.HasOne("Albums.Domain.Client", "Client")
+                    b.HasOne("Albums.Domain.User", "User")
                         .WithOne("Login")
-                        .HasForeignKey("Albums.Domain.Login", "ClientId")
+                        .HasForeignKey("Albums.Domain.Login", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Client");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Albums.Domain.Photo", b =>
@@ -139,9 +139,10 @@ namespace Shared.Infra.Migrations
                     b.Navigation("Photos");
                 });
 
-            modelBuilder.Entity("Albums.Domain.Client", b =>
+            modelBuilder.Entity("Albums.Domain.User", b =>
                 {
-                    b.Navigation("Album");
+                    b.Navigation("Album")
+                        .IsRequired();
 
                     b.Navigation("Login")
                         .IsRequired();

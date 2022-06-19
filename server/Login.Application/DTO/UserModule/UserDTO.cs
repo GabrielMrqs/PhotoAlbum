@@ -1,6 +1,6 @@
-﻿namespace Login.Application.DTO.ClientModule
+﻿namespace Login.Application.DTO.UserModule
 {
-    public class ClientDTO
+    public class UserDTO
     {
         public string Username { get; set; }
         public string Email { get; set; }

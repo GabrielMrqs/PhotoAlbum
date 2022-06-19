@@ -25,11 +25,11 @@ app.UseCors("cors");
 
 app.UseHttpsRedirection();
 
-app.MapGet("/getAlbum/{clientId}", async (IMediator mediator, Guid clientId) =>
+app.MapGet("/getAlbum/{userId}", async (IMediator mediator, Guid userId) =>
 {
-    return await mediator.Send(new GetPhotoAlbumRequest(clientId));
+    return await mediator.Send(new GetPhotoAlbumRequest(userId));
 })
-.WithName("Get client's Album");
+.WithName("Get user's Album");
 
 app.MapPut("/addPhoto", async (IMediator mediator, AddPhotoDTO addphoto) =>
 {
@@ -55,7 +55,6 @@ void AddServices(WebApplicationBuilder builder)
     builder.Services.AddAutoMapper(typeof(GetPhotoAlbumHandler));
     builder.Services.AddMediatR(typeof(GetPhotoAlbumHandler));
     builder.Services.AddCors(opt => opt.AddPolicy("cors", x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
-    //builder.Services.AddScoped<BaseRepository<Client>>();
     builder.Services.AddScoped<AlbumRepository>();
     builder.Services.AddDbContext<AppDbContext>(opt =>
         opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

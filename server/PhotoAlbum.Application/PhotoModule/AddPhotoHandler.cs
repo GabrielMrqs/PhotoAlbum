@@ -23,7 +23,7 @@ namespace PhotoAlbum.Application.PhotoModule
         {
             var photoDTO = request.AddphotoDTO;
 
-            var album = await _albumRepository.GetByClientIdAsync(photoDTO.ClientId);
+            var album = await _albumRepository.GetByUserIdAsync(photoDTO.UserId);
 
             var photo = new Photo(photoDTO.PhotoBase64);
 

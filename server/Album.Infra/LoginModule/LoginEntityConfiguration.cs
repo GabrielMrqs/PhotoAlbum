@@ -8,7 +8,7 @@ namespace Albums.Infra.LoginModule
     {
         public void Configure(EntityTypeBuilder<Login> builder)
         {
-            builder.ToTable("Logins");
+            builder.ToTable("Login");
 
             builder.HasKey(x => x.Id);
 
@@ -16,9 +16,9 @@ namespace Albums.Infra.LoginModule
 
             builder.Property(x => x.Email).IsRequired();
 
-            builder.HasOne(x => x.Client)
+            builder.HasOne(x => x.User)
                    .WithOne(x => x.Login)
-                   .HasForeignKey<Album>(x => x.ClientId);
+                   .HasForeignKey<Album>(x => x.UserId);
         }
     }
 }

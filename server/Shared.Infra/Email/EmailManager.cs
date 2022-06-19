@@ -5,7 +5,7 @@ namespace Shared.Infra.Email
 {
     public class EmailManager
     {
-        public static async Task SendVerificationEmail(string clientEmail, string clientUserName, string body)
+        public static async Task SendVerificationEmail(string userEmail, string userName, string body)
         {
             var email = Environment.GetEnvironmentVariable("EMAIL");
             var pwd = Environment.GetEnvironmentVariable("PWD");
@@ -17,7 +17,7 @@ namespace Shared.Infra.Email
                 Credentials = new NetworkCredential(email, pwd),
                 EnableSsl = true,
             };
-            await smtpClient.SendMailAsync(email, clientEmail, $"Hello {clientUserName}", url);
+            await smtpClient.SendMailAsync(email, userEmail, $"Hello {userName}", url);
         }
     }
 }
