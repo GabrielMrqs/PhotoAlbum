@@ -5,12 +5,12 @@ namespace Albums.Domain
     public class User : Entity
     {
         public string Username { get; set; }
-        public Login Login { get; set; }
         public Album Album { get; set; }
 
-        public User()
+        public User(string username)
         {
             Album = new();
+            Username = username;
         }
 
     }

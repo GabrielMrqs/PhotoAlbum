@@ -16,6 +16,8 @@ export class UserService {
     return this.http.post(`${this.baseURL}/addUser`, user);
   }
   public login(login: any): Observable<any> {
-    return this.http.post(`${this.baseURL}/login`, login);
+    return this.http.post(`${this.baseURL}/login`, login, {
+      responseType: 'text',
+    });
   }
 }

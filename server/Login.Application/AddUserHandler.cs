@@ -1,17 +1,17 @@
 ﻿using Albums.Domain;
 using Albums.Infra.LoginModule;
-using Login.Application.DTO.UserModule;
+using Albums.Infra.UserModule;
+using Logins.Application.DTO.UserModule;
 using MediatR;
-using Shared.Infra;
 
-namespace Login.Application
+namespace Logins.Application
 {
     public class AddUserHandler : IRequestHandler<AddUserRequest>
     {
-        private readonly BaseRepository<User> _userRepository;
+        private readonly UserRepository _userRepository;
         private readonly LoginRepository _loginRepository;
 
-        public AddUserHandler(BaseRepository<User> userRepository, LoginRepository loginRepository)
+        public AddUserHandler(UserRepository userRepository, LoginRepository loginRepository)
         {
             _userRepository = userRepository;
             _loginRepository = loginRepository;
@@ -25,12 +25,12 @@ namespace Login.Application
             if (alreadyExists)
                 throw new Exception("User already registred in database");
 
-            var user = new User
-            {
-                Username = userRequest.Username,
-                Login = new(userRequest.Email, userRequest.Password)
-            };
-            await _userRepository.InsertAsync(user);
+            var user = new User(userRequest.Username);
+            await _userRepository.Add(user);
+
+            var login = new Login(userRequest.Email, userRequest.Password, user.Id);
+            await _loginRepository.Add(login);
+
             return Unit.Value;
         }
     }

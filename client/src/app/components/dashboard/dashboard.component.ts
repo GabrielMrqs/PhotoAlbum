@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { AlbumService } from 'src/app/services/album.service';
 
 @Component({
@@ -7,17 +8,29 @@ import { AlbumService } from 'src/app/services/album.service';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  userId: string = 'userId';
+  authToken: string = 'authToken';
+  token: any;
   id: string | null;
   photos: any[];
-  constructor(private service: AlbumService) {}
+  constructor(
+    private service: AlbumService,
+    private jwtHelper: JwtHelperService
+  ) {}
 
   ngOnInit(): void {
-    this.id = localStorage.getItem(this.userId);
+    this.token = this.getToken();
+    this.id = this.getUserId(this.token);
     this.service.getAlbum(this.id).subscribe((res) => {
       this.photos = res;
     });
   }
 
+  private getUserId(token: any) {
+    return token.userId;
+  }
 
+  private getToken(): any {
+    let encodedToken = localStorage.getItem(this.authToken);
+    return this.jwtHelper.decodeToken(encodedToken!);
+  }
 }

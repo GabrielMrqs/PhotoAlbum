@@ -13,7 +13,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { VerificationComponent } from './components/verification/verification.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { PhotoComponent } from './components/photo/photo.component';
+import { JwtModule } from '@auth0/angular-jwt';
 
+export function tokenGetter() {
+  return localStorage.getItem("authToken");
+}
 @NgModule({
   declarations: [AppComponent, LogInComponent, RegisterComponent, VerificationComponent, DashboardComponent, PhotoComponent],
   imports: [
@@ -25,6 +29,12 @@ import { PhotoComponent } from './components/photo/photo.component';
     ReactiveFormsModule,
     FlexLayoutModule,
     HttpClientModule,
+    JwtModule.forRoot({
+      config:{
+        tokenGetter: tokenGetter,
+        allowedDomains:['localhost:4200']
+      }
+    })
   ],
   providers: [],
   bootstrap: [AppComponent],

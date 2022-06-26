@@ -1,35 +1,30 @@
 ﻿using Albums.Domain;
-using Albums.Infra.AlbumModule;
+using Albums.Infra.UserModule;
 using MediatR;
 using PhotoAlbum.Application.PhotoModule.DTO_s;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PhotoAlbum.Application.PhotoModule
 {
     public class AddPhotoHandler : IRequestHandler<AddPhotoRequest>
     {
-        private readonly AlbumRepository _albumRepository;
+        private readonly UserRepository _userRepository;
 
-        public AddPhotoHandler(AlbumRepository albumRepository)
+        public AddPhotoHandler(UserRepository userRepository)
         {
-            _albumRepository = albumRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<Unit> Handle(AddPhotoRequest request, CancellationToken cancellationToken)
         {
             var photoDTO = request.AddphotoDTO;
 
-            var album = await _albumRepository.GetByUserIdAsync(photoDTO.UserId);
+            var user = await _userRepository.GetById(photoDTO.UserId);
 
             var photo = new Photo(photoDTO.PhotoBase64);
 
-            album.AddPhoto(photo);
+            user.Album.AddPhoto(photo);
 
-            await _albumRepository.Update(album);
+            await _userRepository.Update(user);
 
             return Unit.Value;
         }

@@ -1,11 +1,11 @@
 ﻿using Albums.Infra.LoginModule;
-using Login.Application.DTO.UserModule;
+using Logins.Application.DTO.UserModule;
 using MediatR;
 using Shared.Infra;
 using Shared.Infra.Email;
 using System.Security.Claims;
 
-namespace Login.Application
+namespace Logins.Application
 {
     public class VerifyUserHandler : IRequestHandler<VerifyUserRequest>
     {
@@ -27,9 +27,9 @@ namespace Login.Application
             var expireDate = DateTime.UtcNow.AddDays(1);
             var claims = new Claim[]
             {
-                new Claim("username", user.Username),
-                new Claim("email", user.Email),
-                new Claim("password", user.Password),
+                new ("username", user.Username),
+                new ("email", user.Email),
+                new ("password", user.Password),
             };
             var jwt = JWTManager.CreateToken(claims, expireDate);
             await EmailManager.SendVerificationEmail(user.Email, user.Username, jwt);

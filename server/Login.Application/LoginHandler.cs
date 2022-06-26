@@ -1,23 +1,37 @@
 ﻿using Albums.Infra.LoginModule;
-using Login.Application.DTO.LoginModule;
+using Logins.Application.DTO.LoginModule;
 using MediatR;
+using Shared.Infra;
+using System.Security.Claims;
 
-namespace Login.Application
+namespace Logins.Application
 {
-    public class LoginHandler : IRequestHandler<LoginRequest, Guid?>
+    public class LoginHandler : IRequestHandler<LoginRequest, string>
     {
-        private readonly LoginRepository _repository;
+        private readonly LoginRepository _loginRepository;
 
-        public LoginHandler(LoginRepository repository)
+        public LoginHandler(LoginRepository loginRepository)
         {
-            _repository = repository;
+            _loginRepository = loginRepository;
         }
 
-        public async Task<Guid?> Handle(LoginRequest request, CancellationToken cancellationToken)
+        public async Task<string> Handle(LoginRequest request, CancellationToken cancellationToken)
         {
             var login = request.Login;
-            return await _repository.LoginAsync(login.Email, login.Password);
+
+            var userId = await _loginRepository.LoginAsync(login.Email, login.Password);
+
+            var expireDate = DateTime.UtcNow.AddDays(1);
+
+            var claims = new Claim[]
+            {
+                new ("userId", $"{userId}")
+            };
+
+            var token = JWTManager.CreateToken(claims, expireDate);
+            
+            return token;
         }
     }
-    public record LoginRequest(LoginDTO Login) : IRequest<Guid?>;
+    public record LoginRequest(LoginDTO Login) : IRequest<string>;
 }

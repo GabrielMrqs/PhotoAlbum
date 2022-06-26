@@ -1,10 +1,9 @@
-using Albums.Domain;
 using Albums.Infra.LoginModule;
-using Login.Application;
-using Login.Application.DTO.UserModule;
-using Login.Application.DTO.LoginModule;
+using Albums.Infra.UserModule;
+using Logins.Application;
+using Logins.Application.DTO.LoginModule;
+using Logins.Application.DTO.UserModule;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Shared.Infra;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +13,10 @@ LoadEnvironmentVariables();
 AddServices(builder);
 
 builder.Configuration.AddEnvironmentVariables();
+
+builder.ConfigureMongoClient();
+
+MongoExtensions.ConfigureBSON();
 
 var app = builder.Build();
 
@@ -45,8 +48,6 @@ app.MapPost("/login", async (IMediator mediator, LoginDTO login) =>
 })
 .WithName("Login");
 
-await ApplyMigrations();
-
 app.Run();
 
 void LoadEnvironmentVariables()
@@ -56,20 +57,12 @@ void LoadEnvironmentVariables()
     DotEnv.Load(dotenv);
 }
 
-async Task ApplyMigrations()
-{
-    using var scope = app.Services.CreateAsyncScope();
-    await scope.ServiceProvider.GetRequiredService<AppDbContext>().Database.MigrateAsync();
-}
-
 void AddServices(WebApplicationBuilder builder)
 {
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
     builder.Services.AddMediatR(typeof(VerifyUserHandler));
     builder.Services.AddCors(opt => opt.AddPolicy("cors", x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
-    builder.Services.AddScoped<BaseRepository<User>>();
+    builder.Services.AddScoped<UserRepository>();
     builder.Services.AddScoped<LoginRepository>();
-    builder.Services.AddDbContext<AppDbContext>(opt =>
-        opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 }

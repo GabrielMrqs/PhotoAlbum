@@ -1,9 +1,8 @@
-using Microsoft.EntityFrameworkCore;
-using Shared.Infra;
+using Albums.Infra.UserModule;
 using MediatR;
-using Albums.Infra.AlbumModule;
 using PhotoAlbum.Application.PhotoModule;
 using PhotoAlbum.Application.PhotoModule.DTO_s;
+using Shared.Infra;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +11,10 @@ LoadEnvironmentVariables();
 AddServices(builder);
 
 builder.Configuration.AddEnvironmentVariables();
+
+builder.ConfigureMongoClient();
+
+MongoExtensions.ConfigureBSON();
 
 var app = builder.Build();
 
@@ -37,8 +40,6 @@ app.MapPut("/addPhoto", async (IMediator mediator, AddPhotoDTO addphoto) =>
 })
 .WithName("Add photo");
 
-await ApplyMigrations();
-
 app.Run();
 
 void LoadEnvironmentVariables()
@@ -55,13 +56,5 @@ void AddServices(WebApplicationBuilder builder)
     builder.Services.AddAutoMapper(typeof(GetPhotoAlbumHandler));
     builder.Services.AddMediatR(typeof(GetPhotoAlbumHandler));
     builder.Services.AddCors(opt => opt.AddPolicy("cors", x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
-    builder.Services.AddScoped<AlbumRepository>();
-    builder.Services.AddDbContext<AppDbContext>(opt =>
-        opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-}
-
-async Task ApplyMigrations()
-{
-    using var scope = app.Services.CreateAsyncScope();
-    await scope.ServiceProvider.GetRequiredService<AppDbContext>().Database.MigrateAsync();
+    builder.Services.AddScoped<UserRepository>();
 }
