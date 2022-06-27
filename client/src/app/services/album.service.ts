@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Photo } from '../models/photo';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class AlbumService {
   public getAlbum(id: any): Observable<any> {
     return this.http.get(`${this.baseURL}/getAlbum/${id}`,);
   }
-  public addPhoto(client: any): Observable<any> {
-    return this.http.post(`${this.baseURL}/addPhoto`, client);
+  public addPhoto(photo: Photo): Observable<any> {
+    return this.http.put(`${this.baseURL}/addPhoto`, photo);
   }
 }

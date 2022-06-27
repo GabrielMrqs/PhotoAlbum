@@ -1,7 +1,16 @@
-<div class="content">
-  <div fxLayout="row wrap" fxLayoutGap="15px grid">
-    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngFor="let photo of photos">
-      <app-photo [photo]="photo.imageBase64"></app-photo>
+<app-add-photo>oiiiii</app-add-photo>
+<div class="grid-container" id="grid">
+  <div class="card-deck-container mat-elevation-z4">
+    <div fxLayout="row wrap" fxLayoutGap="15px grid">
+      <app-photo class="card-item"
+      *ngFor="let photo of photos"
+      [photo]="photo.imageBase64"
+      [title]="photo.title"
+      [description]="photo.description"
+      fxFlex="20%"
+      fxFlex.xs="100%"
+      fxFlex.sm="33%">
+      </app-photo>
     </div>
   </div>
 </div>

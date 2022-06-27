@@ -7,13 +7,14 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class PhotoComponent implements OnInit {
   @Input() photo: string;
-  description: string = 'oi';
-  title: string = 'oi';
+  @Input() description: string;
+  @Input() title: string;
   constructor() {}
 
   ngOnInit(): void {}
 
   toBase64(photo: string) {
-    return `data:image/png;base64,${photo}`;
+    // return `data:image/png;base64,${photo}`;
+    return photo;
   }
 }

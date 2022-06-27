@@ -1,0 +1,39 @@
+<mat-toolbar>
+  <button class="btn btn-dark" (click)="openModal()">Add Photo</button>
+</mat-toolbar>
+
+<ng-template #photoModal let-modal>
+  <div class="photoForm">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Upload a picture!</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <form #photoForm="ngForm" class="example-form" (ngSubmit)="uploadPicture(photoForm.value)">
+        <mat-card-content>
+          <mat-form-field class="field">
+            <input type="text" name="title" ngModel matInput placeholder="Title">
+          </mat-form-field>
+          <mat-form-field class="field">
+            <input type="text" name="description" ngModel matInput placeholder="Description">
+          </mat-form-field>
+          <ngp-image-picker
+            class="imagepicker"
+            [_config]="imagePickerConf"
+            ($imageChanged)="onImageChange($event)"
+            name="photoBase64"
+            matInput>
+          </ngp-image-picker>
+        </mat-card-content>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-dark" (click)="modal.close()">
+            Save
+          </button>
+          <button type="button" class="btn btn-dark" (click)="modal.close()">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>    
+  </div>
+</ng-template>

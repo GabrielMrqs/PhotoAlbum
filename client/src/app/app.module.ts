@@ -14,12 +14,14 @@ import { VerificationComponent } from './components/verification/verification.co
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { PhotoComponent } from './components/photo/photo.component';
 import { JwtModule } from '@auth0/angular-jwt';
+import { AddPhotoComponent } from './components/add-photo/add-photo.component';
+import { NgpImagePickerModule } from 'ngp-image-picker';
 
 export function tokenGetter() {
   return localStorage.getItem("authToken");
 }
 @NgModule({
-  declarations: [AppComponent, LogInComponent, RegisterComponent, VerificationComponent, DashboardComponent, PhotoComponent],
+  declarations: [AppComponent, LogInComponent, RegisterComponent, VerificationComponent, DashboardComponent, PhotoComponent, AddPhotoComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -29,10 +31,11 @@ export function tokenGetter() {
     ReactiveFormsModule,
     FlexLayoutModule,
     HttpClientModule,
+    NgpImagePickerModule,
     JwtModule.forRoot({
-      config:{
+      config: {
         tokenGetter: tokenGetter,
-        allowedDomains:['localhost:4200']
+        allowedDomains: ['localhost:4200']
       }
     })
   ],
@@ -40,4 +43,4 @@ export function tokenGetter() {
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule {}
+export class AppModule { }

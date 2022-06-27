@@ -20,7 +20,7 @@ namespace PhotoAlbum.Application.PhotoModule
 
             var user = await _userRepository.GetById(photoDTO.UserId);
 
-            var photo = new Photo(photoDTO.PhotoBase64);
+            var photo = new Photo(photoDTO.PhotoBase64, photoDTO.Description, photoDTO.Title);
 
             user.Album.AddPhoto(photo);
 

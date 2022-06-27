@@ -9,7 +9,9 @@ namespace PhotoAlbum.Application
         public MappingProfile()
         {
             CreateMap<Photo, ViewPhotoDTO>()
-                .ForMember(dest => dest.ImageBase64, opt => opt.MapFrom(src => src.ImageBase64));
+                .ForMember(dest => dest.ImageBase64, opt => opt.MapFrom(src => src.ImageBase64))
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description));
         }
     }
 }
